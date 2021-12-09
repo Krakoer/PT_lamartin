@@ -1,0 +1,20 @@
+.header-link{
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.header-link:hover{
+    color:inherit;
+}
+
+.just{
+    text-align:justify;
+}
+
+#edit-button{
+    border: none;
+    color: white;
+    padding: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}

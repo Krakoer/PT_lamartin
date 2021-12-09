@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="jumbotron mb-5">
+
+  <h1 class="display-4">Salut PT!</h1>
+  <p class="lead">Sur ce site sont référencés les anciens PT de la Martin. N'hésite pas à contacter un ancien pour
+    parler de son école ou de son parcours !</p>
+  <hr class="my-4">
+  {% if not has_created and user.username != 'prof'%}
+  
+  <p>Tu peux t'inscrire en cliquant sur ce bouton</p>
+  <p class="lead">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerModal">
+      Inscription
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="registerModalLabel">Inscription</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'anciens:create' %}" method="post">
+              {% csrf_token %}
+              <fieldset>
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                <div class="mb-3">
+                  <label for="nomInput" class="form-label">Nom</label>
+                  <input name="nom" type="text" class="form-control" id="nomInput" placeholder="Gaggioli" required>
+                </div>
+                <div class="mb-3">
+                  <label for="prenomInput" class="form-label">Prénom</label>
+                  <input name="prenom" type="text" class="form-control" id="prenomInput" placeholder="Viviane" required>
+                </div>
+                <div class="mb-3">
+                  <label for="promoInput" class="form-label">Promo</label>
+                  <select name="promo" type="text" class="form-control" id="promoInput">
+                    <option value="2010">2010</option>
+                    <option value="2011">2011</option>
+                    <option value="2012">2012</option>
+                    <option value="2013">2013</option>
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="ecoleInput" class="form-label">École</label>
+                  <input name="ecole" type="text" class="form-control" id="ecoleInput" placeholder="Céramique Limoges"
+                    required>
+                </div>
+                <div class="mb-3">
+                  <label for="specialiteInput" class="form-label">Spécialisation</label>
+                  <input name="specialite" type="text" class="form-control" id="specialiteInput"
+                    placeholder="Tasses en céramique" required>
+                </div>
+                <div class="mb-3">
+                  <label for="entrepriseInput" class="form-label">Entreprise</label>
+                  <input name="entreprise" type="text" class="form-control" id="entrepriseInput"
+                    placeholder="Shadoks Inc.">
+                </div>
+                <div class="mb-3">
+                  <label for="commentaireInput" class="form-label">Commentaire</label>
+                  <textarea name="description" class="form-control" id="commentaireInput"
+                    placeholder="J'adore les chats" required></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="contactInput" class="form-label">Contact</label>
+                  <input name="contact" type="text" class="form-control" id="contactInput"
+                    placeholder="viviane.gaggioli@jensaisrienquoi.com" required>
+                </div>
+                <div class="modal-footer d-block">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                  <button type="submit" class="btn btn-success float-end">Submit</button>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </p>
+  {% endif %}
+</div>
+<div class="row mx-1">
+  <div class="col-12">
+    {% if anciens_list %}
+    <div class="table-responsive">
+      <table class="table table-striped" id="anciens-table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Promo</th>
+            <th>École</th>
+            <th>Spécialisation</th>
+            <th>Entreprise</th>
+            {% comment %} <th class="col-sm-5">Commentaire</th> {% endcomment %}
+            {% comment %} <th>Contact</th> {% endcomment %}
+            <th>Détails</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ancien in anciens_list %}
+          <tr>
+            <td>{{ancien.nom}}</td>
+            <td>{{ancien.prenom}}</td>
+            <td>{{ancien.promo}}</td>
+            <td>{{ancien.ecole}}</td>
+            <td>{{ancien.specialite}}</td>
+            <td>{{ancien.entreprise|default_if_none:""}}</td>
+            {% comment %} <td class="text-center limit">{{ancien.description}}</td> {% endcomment %}
+            {% comment %} <td>{{ancien.contact|default_if_none:""}}</td> {% endcomment %}
+            <td><a href="{% url 'anciens:ancien' ancien.id%}"><i class="bi-three-dots"
+                  style="font-size: 1.5rem; color: black;"></i></a></td>
+          </tr>
+          {%endfor%}
+
+        </tbody>
+      </table>
+
+    </div>
+    {%else%}
+    <p>No data available.</p>
+    {%endif%}
+
+
+  </div>
+
+</div>
+{% endblock content %}
+

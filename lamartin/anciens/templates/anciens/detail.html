@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load range %}
+{% block content %}
+<a href="/"><i class="fa fa-arrow-left mb-5" aria-hidden="true"
+    style="font-size: 1.5rem; color: black;"></i></a><br/>
+
+<h1 class="display-4 fw-normal mb-5">
+
+  {{ancien}}
+  {% if ancien.user == user or user.is_superuser%}
+  <button type="button" class="btn" id="edit-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <i class="bi bi-pencil-square" style="font-size:2em;"></i>
+  </button>
+  {% endif %}
+</h1>
+<h2>{{ancien.ecole}}, {{ancien.specialite}}</h2>
+{% if ancien.entreprise %}
+<h3>Travaille chez {{ancien.entreprise}}</h3>
+{%endif%}
+<p class="just lead fw-normal mb-5 mt-5">{{ancien.description}}</p>
+<p>contact : {{ancien.contact}}</p>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registerModalLabel">Modifier le profil</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'anciens:edit' ancien.id%}" method="post">
+          {% csrf_token %}
+          <fieldset>
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <div class="mb-3">
+              <label for="nomInput" class="form-label">Nom</label>
+              <input value="{{ancien.nom}}" name="nom" type="text" class="form-control" id="nomInput"
+                placeholder="Gaggioli" required>
+            </div>
+            <div class="mb-3">
+              <label for="prenomInput" class="form-label">Prénom</label>
+              <input value="{{ancien.prenom}}" name="prenom" type="text" class="form-control" id="prenomInput"
+                placeholder="Viviane" required>
+            </div>
+            <div class="mb-3">
+              <label for="promoInput" class="form-label">Promo</label>
+              <select name="promo" type="text" class="form-control" id="promoInput">
+                {% if ancien.promo == 2010 %}<option selected value="2010">2010</option>{% else %}<option value="2010">
+                  2010</option>{% endif %}
+                {% if ancien.promo == 2011 %}<option selected value="2011">2011</option>{% else %}<option value="2011">
+                  2011</option>{% endif %}
+                {% if ancien.promo == 2012 %}<option selected value="2012">2012</option>{% else %}<option value="2012">
+                  2012</option>{% endif %}
+                {% if ancien.promo == 2013 %}<option selected value="2013">2013</option>{% else %}<option value="2013">
+                  2013</option>{% endif %}
+                {% if ancien.promo == 2014 %}<option selected value="2014">2014</option>{% else %}<option value="2014">
+                  2014</option>{% endif %}
+                {% if ancien.promo == 2015 %}<option selected value="2015">2015</option>{% else %}<option value="2015">
+                  2015</option>{% endif %}
+                {% if ancien.promo == 2016 %}<option selected value="2016">2016</option>{% else %}<option value="2016">
+                  2016</option>{% endif %}
+                {% if ancien.promo == 2017 %}<option selected value="2017">2017</option>{% else %}<option value="2017">
+                  2017</option>{% endif %}
+                {% if ancien.promo == 2018 %}<option selected value="2018">2018</option>{% else %}<option value="2018">
+                  2018</option>{% endif %}
+                {% if ancien.promo == 2019 %}<option selected value="2019">2019</option>{% else %}<option value="2019">
+                  2019</option>{% endif %}
+                {% if ancien.promo == 2020 %}<option selected value="2020">2020</option>{% else %}<option value="2020">
+                  2020</option>{% endif %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="ecoleInput" class="form-label">École</label>
+              <input value="{{ancien.ecole}}" name="ecole" type="text" class="form-control" id="ecoleInput"
+                placeholder="Céramique Limoges" required>
+            </div>
+            <div class="mb-3">
+              <label for="specialiteInput" class="form-label">Spécialisation</label>
+              <input value="{{ancien.specialite}}" name="specialite" type="text" class="form-control"
+                id="specialiteInput" placeholder="Tasses en céramique" required>
+            </div>
+            <div class="mb-3">
+              <label for="entrepriseInput" class="form-label">Entreprise</label>
+              <input value="{{ancien.entreprise|default_if_none:''}}" name="entreprise" type="text" class="form-control"
+                id="entrepriseInput" placeholder="Shadoks Inc.">
+            </div>
+            <div class="mb-3">
+              <label for="commentaireInput" class="form-label">Commentaire</label>
+              <textarea name="description" class="form-control" id="commentaireInput" placeholder="J'adore les chats"
+                required>{{ancien.description}}</textarea>
+            </div>
+            <div class="mb-3">
+              <label for="contactInput" class="form-label">Contact</label>
+              <input value="{{ancien.contact|default_if_none:''}}" name="contact" type="text" class="form-control" id="contactInput"
+                placeholder="viviane.gaggioli@jensaisrienquoi.com" required>
+            </div>
+            <div class="modal-footer d-block">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              <button type="submit" class="btn btn-success float-end">Submit</button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
